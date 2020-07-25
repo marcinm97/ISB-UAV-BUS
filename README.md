@@ -1,1 +1,1 @@
-# ISB-UAV-BUS-Independent-Slave-Bridge-
+# ISB-UAV BUS (Independent Slave Bridge)
