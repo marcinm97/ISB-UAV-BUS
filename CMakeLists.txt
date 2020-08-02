@@ -1,6 +1,7 @@
+cmake_minimum_required(VERSION 3.7)
+
 SET(CMAKE_SYSTEM_NAME Generic)
 SET(CMAKE_SYSTEM_VERSION 1)
-cmake_minimum_required(VERSION 3.7)
 
 # specify cross compilers and tools
 SET(CMAKE_C_COMPILER_WORKS 1)
@@ -38,6 +39,7 @@ add_definitions(-DUSE_HAL_DRIVER -DSTM32F446xx)
 
 set(ASSEMBLY_STARTUP ${CMAKE_SOURCE_DIR}/startup/startup_stm32f446xx.s)
 
+# TODO: to automation - file(...)
 set(ISB_SOURCES
         ${CMAKE_SOURCE_DIR}/Src/main.c
         ${CMAKE_SOURCE_DIR}/Src/stm32f4xx_it.c
@@ -46,7 +48,6 @@ set(ISB_SOURCES
         )
 
 set(ISB_HEADERS
-        ${CMAKE_SOURCE_DIR}/Inc/FreeRTOSConfig.h
         ${CMAKE_SOURCE_DIR}/Inc/stm32f4xx_it.h
         )
 
@@ -59,7 +60,7 @@ add_subdirectory(HAL_Driver)
 #add_subdirectory(CMSIS)
 
 # FreeRTOS LIBRARY          - SUBDIR (own CMakeLists.txt)
-#add_subdirectory(FreeRTOS)
+add_subdirectory(FreeRTOS)
 
 # ALLOWS TO INCLUDE INC HEADERS IN CODE
 include_directories(${CMAKE_SOURCE_DIR}/Inc)
@@ -68,9 +69,13 @@ include_directories(${CMAKE_SOURCE_DIR}/Inc)
 add_executable(${PROJECT_NAME}.elf
         ${ISB_SOURCES} ${ISB_HEADERS}
         ${ASSEMBLY_STARTUP}
-        ${LINKER_SCRIPT})
+        ${LINKER_SCRIPT}
+        )
 
-target_link_libraries(${PROJECT_NAME}.elf PUBLIC hal_lib)
+target_link_libraries(${PROJECT_NAME}.elf PUBLIC
+                      hal_lib
+                      frtos_lib
+                     )
 
 
 set(CMAKE_EXE_LINKER_FLAGS
