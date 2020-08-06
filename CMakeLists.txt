@@ -20,6 +20,9 @@ if (${BUILD_UTESTS})
     PROJECT(ISB-UAVBus C CXX ASM)
     enable_testing()
 
+    # tests libs to link
+    add_subdirectory(tests)
+
     # control tests launching
     option(BLUETOOTH_UTEST_ENABLED  "Run Bluetooth module unit tests"  OFF)
     option(SDCARD_UTEST_ENABLED     "Run SDCard module unit tests"     OFF)
