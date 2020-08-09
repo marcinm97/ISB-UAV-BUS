@@ -19,12 +19,18 @@ if (${BUILD_UTESTS})
     message("USING GCC/G++ - RUNNING UNIT TESTS")
     PROJECT(ISB-UAVBus C CXX ASM)
     enable_testing()
+    include(CTest)
 
     # tests libs to link
     add_subdirectory(tests)
 
     # control tests launching
-    option(BLUETOOTH_UTEST_ENABLED  "Run Bluetooth module unit tests"  OFF)
+    option(BLUETOOTH_UTEST_ENABLED  "Run Bluetooth module unit tests"  ON)
+
+    if(${BLUETOOTH_UTEST_ENABLED})
+        add_subdirectory(Bluetooth)
+    endif()
+
     option(SDCARD_UTEST_ENABLED     "Run SDCard module unit tests"     OFF)
     option(RXTXFrames_UTEST_ENABLED "Run RXTXFrames module unit tests" OFF)
 
