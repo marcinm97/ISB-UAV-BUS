@@ -25,7 +25,7 @@ jobs:
         cd build
         cmake .. -DCMAKE_BUILD_TYPE=Debug -G 'CodeBlocks - Unix Makefiles';
         cmake --build . --target ISB-UAVBus.elf -j 4
-    - name: build tests
+    - name: build&run tests
       run: |
         git submodule init
         git submodule update
@@ -33,9 +33,4 @@ jobs:
         cd build-tests
         cmake .. -DCMAKE_BUILD_TYPE=Debug -DBUILD_UTESTS=ON -G 'CodeBlocks - Unix Makefiles'
         cmake --build . --target bluetooth_test
-    - name: run tests
-      run: |
-        cd build-tests
-        cd Bluetooth
-        ./bluetooth_test --gtest_output=xml
         
