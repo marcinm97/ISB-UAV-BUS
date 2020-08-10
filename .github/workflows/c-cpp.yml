@@ -17,7 +17,7 @@ jobs:
     - name: install dependencies
       run: |
         sudo apt install build-essential
-        sudo apt install gcc-arm-none-eabi binutils-arm-none-eabi gdb-arm-none-eabi openocd
+        sudo apt install gcc-arm-none-eabi binutils-arm-none-eabi openocd
         sudo apt install cmake
         mkdir build
         cd build
