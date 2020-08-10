@@ -14,5 +14,5 @@ struct BluetoothTest : public ::testing::Test {
 TEST_F(BluetoothTest, CheckConnection) {
 
     EXPECT_EQ(bluetooth_connection(), true);
-    EXPECT_EQ(bluetooth_connection(), true);
+    EXPECT_EQ(bluetooth_connection(), false);
 }
