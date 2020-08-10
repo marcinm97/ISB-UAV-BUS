@@ -27,6 +27,8 @@ jobs:
         cmake --build . --target ISB-UAVBus.elf -j 4
     - name: build tests
       run: |
+        git submodule init
+        git submodule update
         mkdir build-tests
         cd build-tests
         cmake .. -DCMAKE_BUILD_TYPE=Debug -DBUILD_UTESTS=ON -G 'CodeBlocks - Unix Makefiles'
