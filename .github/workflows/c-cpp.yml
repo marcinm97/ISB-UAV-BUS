@@ -1,0 +1,27 @@
+name: C/C++ CI
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+  workflow_dispatch:
+
+jobs:
+  build:
+    name: Build sources for target device
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: install dependencies
+      run: |
+        sudo apt install build-essential
+        sudo apt install gcc-arm-none-eabi binutils-arm-none-eabi gdb-arm-none-eabi openocd
+        sudo apt install cmake
+        mkdir build
+        cd build
+    - name: make
+      run: cmake .. -DCMAKE_BUILD_TYPE=Debug -G 'CodeBlocks - Unix Makefiles';
+    - name: build
+      run: cmake --build . --target ISB-UAVBus.elf -j 4
