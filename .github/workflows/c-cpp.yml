@@ -9,7 +9,7 @@ on:
 
 jobs:
   build:
-    name: Build sources for target device
+    name: Build
     runs-on: ubuntu-latest
 
     steps:
@@ -19,12 +19,21 @@ jobs:
         sudo apt install build-essential
         sudo apt install gcc-arm-none-eabi binutils-arm-none-eabi openocd
         sudo apt install cmake
-    - name: make
+    - name: build
       run: | 
         mkdir build
         cd build
         cmake .. -DCMAKE_BUILD_TYPE=Debug -G 'CodeBlocks - Unix Makefiles';
-    - name: build
-      run: |
-        cd build 
         cmake --build . --target ISB-UAVBus.elf -j 4
+    - name: build tests
+      run: |
+        mkdir build-tests
+        cd build-tests
+        cmake .. -DCMAKE_BUILD_TYPE=Debug -DBUILD_UTESTS=ON -G 'CodeBlocks - Unix Makefiles'
+        cmake --build . --target bluetooth_test
+    - name: run tests
+      run: |
+        cd build-tests
+        cd Bluetooth
+        ./bluetooth_test --gtest_output=xml
+        
