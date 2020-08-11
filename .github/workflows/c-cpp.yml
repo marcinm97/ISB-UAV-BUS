@@ -6,6 +6,8 @@ on:
   pull_request:
     branches: [ master ]
   workflow_dispatch:
+  schedule:
+    - cron: '00 20 * * 0'
 
 jobs:
   build:
@@ -16,16 +18,15 @@ jobs:
     - uses: actions/checkout@v2
     - name: install dependencies
       run: |
-        sudo apt install build-essential
-        sudo apt install gcc-arm-none-eabi binutils-arm-none-eabi openocd
-        sudo apt install cmake
+        sudo apt install gcc-arm-none-eabi binutils-arm-none-eabi
     - name: build
+      if: ${{ github.event_name == 'schedule' || contains(github.event.head_commit.message, '#target') || contains(github.event.head_commit.message, '#tr') || contains(github.event.head_commit.message, '#all')}}
       run: | 
         mkdir build
         cd build
         cmake .. -DCMAKE_BUILD_TYPE=Debug -G 'CodeBlocks - Unix Makefiles';
         cmake --build . --target ISB-UAVBus.elf -j 4
-    - name: build&run tests
+    - name: bluetooth tests
       run: |
         git submodule init
         git submodule update
