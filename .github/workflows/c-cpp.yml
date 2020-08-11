@@ -20,13 +20,30 @@ jobs:
       run: |
         sudo apt install gcc-arm-none-eabi binutils-arm-none-eabi
     - name: build
-      if: ${{ github.event_name == 'schedule' || contains(github.event.head_commit.message, '#target') || contains(github.event.head_commit.message, '#tr') || contains(github.event.head_commit.message, '#all')}}
+      if: >- 
+        github.event_name == 'schedule' || 
+        contains(github.event.head_commit.message, '#target') || 
+        contains(github.event.head_commit.message, '#tr') || 
+        contains(github.event.head_commit.message, '#all') ||
+        contains(github.event.head_commit.message, '#TARGET') ||
+        contains(github.event.head_commit.message, '#Target') ||
+        contains(github.event.head_commit.message, '#TR') ||
+        contains(github.event.head_commit.message, '#ALL')
       run: | 
         mkdir build
         cd build
         cmake .. -DCMAKE_BUILD_TYPE=Debug -G 'CodeBlocks - Unix Makefiles';
         cmake --build . --target ISB-UAVBus.elf -j 4
     - name: bluetooth tests
+      if: >- 
+        github.event_name == 'schedule' || 
+        contains(github.event.head_commit.message, '#bluetooth') || 
+        contains(github.event.head_commit.message, '#bl') || 
+        contains(github.event.head_commit.message, '#all') ||
+        contains(github.event.head_commit.message, '#BLUETOOTH') ||
+        contains(github.event.head_commit.message, '#Bluetooth') ||
+        contains(github.event.head_commit.message, '#BL') ||
+        contains(github.event.head_commit.message, '#ALL')
       run: |
         git submodule init
         git submodule update
